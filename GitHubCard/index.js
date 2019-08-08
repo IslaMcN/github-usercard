@@ -1,3 +1,4 @@
+
 /* Step 1: using axios, send a GET request to the following URL 
            (replacing the palceholder with your Github name):
            https://api.github.com/users/<your name>
@@ -47,22 +48,48 @@ const followersArray = [];
 */
 function userCard(url){
 let newCard = document.createElement('div');
-newCard.classList.add('card');
+newCard.classList.add('.card');
 
 let newImage = document.createElement('img');
-newImage.classList.add('user-image');
-newImage.src = imgURL;
+newImage.classList.add('.image');
+newImage.src = 'imgURL';
 
 let info = document.createElement('div');
-info.classList.add('card-info');
+
+
+let header = document.createElement('h3');
+header.classList.add('.header')
+
+let username = document.createElement('p');
+username.classList.add('.username')
+
+let location = document.createElement('p');
+
+
+let profile = document.createElement('p');
+profile.href = 'profileURL';
+
+let followers = document.createElement('p');
+
+let following = document.createElement('p');
+
+let bio = document.createElement('p');
+
 
 newCard.appendChild(newImage);
 newCard.appendChild(info);
+info.appendChild(header);
+info.appendChild(username);
+info.appendChild(location);
+info.appendChild(profile);
+info.appendChild(followers);
+info.appendChild(following);
+info.appendChild(bio);
 
 newCard.addEventListener('click', () => {
   newCard.classList.toggle('selected')
 })
-return newCard
+return userCard
 }
 
 let entry = document.querySelector('.entry')
@@ -70,14 +97,16 @@ let entry = document.querySelector('.entry')
 axios.get('https://api.github.com/users/IslaMcN')
   .then((response) => {
     console.log(response);
-    response.data.message.forEach ( item => {
-      let newUser = new userCard(item)
+    response.data.message.forEach ( item =>  {
+      let newUser = userCard(item)
       entry.appendChild(newUser)
     })
     .catch ((err)=> {
       console.log(err)
     })
   })
+
+  console.log(userCard("https://api.github.com/users/IslaMcN"))
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
