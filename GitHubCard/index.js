@@ -25,7 +25,9 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// const followersArray = ["https://api.github.com/users/daisymesa","https://api.github.com/users/misskellymore", "https://api.github.com/users/chrisbonifacio", "https://api.github.com/users/Rilladubz", "https://api.github.com/users/deegrams221"];
+
+  
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -46,35 +48,40 @@ const followersArray = [];
 </div>
 
 */
-function userCard(url){
-let newCard = document.createElement('div');
+
+
+function userCard(follower){
+console.log(follower);
+  let newCard = document.createElement('div');
 newCard.classList.add('.card');
 
 let newImage = document.createElement('img');
 newImage.classList.add('.image');
-newImage.src = 'imgURL';
+newImage.src = follower.avatar_url;
 
 let info = document.createElement('div');
 
 
 let header = document.createElement('h3');
+header.textContent = follower.name
 header.classList.add('.header')
 
 let username = document.createElement('p');
 username.classList.add('.username')
-
+username.textContent = `Login: ${follower.login}`
 let location = document.createElement('p');
-
+location.textContent = `Location: ${follower.location}`
 
 let profile = document.createElement('p');
-profile.href = 'profileURL';
+profile.textContent = `Profile: ${follower.html_url}`
 
 let followers = document.createElement('p');
+followers.textContent = `Followers: ${follower.followers}`
 
 let following = document.createElement('p');
-
+following.textContent = `Following: ${follower.following}`;
 let bio = document.createElement('p');
-
+bio.textContent = `Bio: ${follower.bio}`;
 
 newCard.appendChild(newImage);
 newCard.appendChild(info);
@@ -89,24 +96,31 @@ info.appendChild(bio);
 newCard.addEventListener('click', () => {
   newCard.classList.toggle('selected')
 })
-return userCard
+return newCard
 }
 
-let entry = document.querySelector('.entry')
 
 axios.get('https://api.github.com/users/IslaMcN')
   .then((response) => {
-    console.log(response);
-    response.data.message.forEach ( item =>  {
-      let newUser = userCard(item)
-      entry.appendChild(newUser)
+    // console.log(response);
+   
+   var card = document.querySelector(".cards")
+   card.appendChild(userCard(response.data))
     })
-    .catch ((err)=> {
-      console.log(err)
-    })
-  })
 
-  console.log(userCard("https://api.github.com/users/IslaMcN"))
+axios.get('https://api.github.com/users/IslaMcN/followers')
+    .then(function (response) {
+      const followersArray = response.data
+
+      followersArray.forEach((follower) => {
+        axios.get(follower.url)
+        .then(function (response) {
+          var card = document.querySelector(".cards");
+          card.appendChild(userCard(response.data));
+        })
+      })
+    })
+ 
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
