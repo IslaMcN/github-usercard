@@ -45,7 +45,39 @@ const followersArray = [];
 </div>
 
 */
+function userCard(url){
+let newCard = document.createElement('div');
+newCard.classList.add('card');
 
+let newImage = document.createElement('img');
+newImage.classList.add('user-image');
+newImage.src = imgURL;
+
+let info = document.createElement('div');
+info.classList.add('card-info');
+
+newCard.appendChild(newImage);
+newCard.appendChild(info);
+
+newCard.addEventListener('click', () => {
+  newCard.classList.toggle('selected')
+})
+return newCard
+}
+
+let entry = document.querySelector('.entry')
+
+axios.get('https://api.github.com/users/IslaMcN')
+  .then((response) => {
+    console.log(response);
+    response.data.message.forEach ( item => {
+      let newUser = new userCard(item)
+      entry.appendChild(newUser)
+    })
+    .catch ((err)=> {
+      console.log(err)
+    })
+  })
 /* List of LS Instructors Github username's: 
   tetondan
   dustinmyers
